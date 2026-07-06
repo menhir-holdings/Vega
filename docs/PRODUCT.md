@@ -1,138 +1,106 @@
 # Vega — product definition
 
-**Vega** is Menhir’s photo portfolio platform for students and working photographers. One workspace, two modes, one album model.
+**Vega** is the photographer's **website manager** — it runs your portfolio site, keeps you in creative control, and handles the shoot-to-showcase loop so every job updates both your clients' deliverables and your public work.
 
-| Mode | Role | Device | What it does |
-|------|------|--------|--------------|
-| **Portfolio builder** | Photographer | **Desktop** | Controller + live preview → publish site to **URL of their choosing** |
-| **Delivery** | Client + photographer | Client: **mobile web** · Photographer: **desktop** | Private album link → pick → retouch loop → one-click finals download |
+| What Vega is | What Vega is not |
+|--------------|------------------|
+| Your site, your direction — Vega publishes and maintains it | A generic drag-and-drop site builder |
+| A manager that handles delivery *for* you | A separate "gallery app" bolted onto a website |
+| One album model: private delivery → public showcase | Two disconnected products |
 
-Hosted at **https://vega.menhir-holdings.com**. Published portfolios can use `{slug}.vega.menhir-holdings.com` or a custom domain.
-
-BOB is deprecated; deploy plumbing migrates here. See [BOB-MIGRATION.md](./BOB-MIGRATION.md).
+Hosted at **https://vega.menhir-holdings.com**. Published portfolios: `{slug}.vega.menhir-holdings.com` or custom domain.
 
 ---
 
-## Core loop (shoot → deliver)
+## Product hierarchy
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  YOUR WEBSITE (primary — creative control retained)      │
+│  Hero · galleries · about · contact · publish           │
+└───────────────────────────┬─────────────────────────────┘
+                            │ each completed shoot feeds in
+┌───────────────────────────▼─────────────────────────────┐
+│  ALBUMS (shoots)                                         │
+│  Upload → curate → client delivery → retouch → showcase  │
+└───────────────────────────┬─────────────────────────────┘
+                            │ culminates in
+              ┌─────────────┴─────────────┐
+              ▼                           ▼
+     Client delivered album        New work on your site
+     (same link, picks → finals)   (gallery section + picks)
+```
+
+**Client delivery** is a feature inside the album workflow — not the product center. It exists to complete the shoot and surface the best images back to your portfolio.
+
+---
+
+## Core loop (shoot → site)
 
 ```mermaid
 stateDiagram-v2
-  [*] --> draft: Upload batch after shoot
-  draft --> ready_to_pick: Photographer publishes delivery
-  ready_to_pick --> picked: Client submits selection
-  picked --> finalized: Retouched finals uploaded
-  finalized --> [*]: Client downloads via same link
+  [*] --> draft: New shoot / album
+  draft --> ready_to_pick: Open client delivery
+  ready_to_pick --> picked: Client submits picks
+  picked --> finalized: Retouch + release downloads
+  finalized --> showcased: Add to website
+  showcased --> [*]: Live on site + client has finals
 ```
 
-### 1. Shoot → ingest (admin, desktop)
+### 1. Website (ongoing)
 
-After a session, the photographer uploads a **batch** (local folder, ZIP, or Google Drive folder) in **Admin**.
+Photographer's home in Vega is **their site** — what's live, what needs a publish, recent shoots waiting to go public.
 
-- Creates a new **album** (or appends to an existing one for the same project).
-- All files land in an **uncategorized pile** or auto-map from folder names.
-- Photographer **curates**: show/hide per image, drag order, assign categories, set cover.
+- Edit copy, hero, about, contact in the **site editor** (controller + live preview)
+- Assign album sections to the page structure
+- **Publish** when ready — Vega handles deployment to your URL
+- Creative direction stays with the photographer; Vega handles plumbing
 
-### 2. Visibility (same album, two audiences)
+### 2. New shoot (album)
 
-| Setting | Portfolio site | Delivery link |
-|---------|----------------|---------------|
-| **Public** | Visible in published site | — |
-| **Private** | Hidden from site | Client link only |
-| **Both** | On portfolio + deliverable | Optional separate delivery pass |
+After a session, create an album and upload a batch (files, folder, or ZIP).
 
-Private albums are how wedding/portrait clients get proofs without exposing work on the public site.
+- Curate: what the **client** sees vs what might later hit the **site**
+- Client delivery: share one link, optional PIN, pick limit
+- Client picks on mobile; photographer retouches and releases finals
+- **Showcase**: choose which images from this shoot join your portfolio — one action adds a gallery section and marks site-visible assets
 
-### 3. Delivery link (client, mobile)
+### 3. Culmination (two outcomes, one workflow)
 
-Photographer sets album state to **`ready_to_pick`** and shares one link (optional PIN).
+| Outcome | Who | What |
+|---------|-----|------|
+| **Delivered album** | Client | Same link: picks → wait → ZIP download of finals |
+| **New showcase** | Photographer's site | Gallery section (or update) with selected finals; site republish optional |
 
-Client experience on phone:
-
-- Album / category tabs
-- Browse proofs (watermarked or low-res previews)
-- Heart or number picks (optional max, e.g. 30 of 400)
-- Optional per-image note (“skin soften”, “B&W”)
-- **Submit selection** → photographer notified (email + in-app)
-
-### 4. Retouch → finalize (admin, desktop)
-
-Album moves to **`picked`**. Photographer sees:
-
-- Ordered pick list with filenames and client notes
-- Export to Lightroom / Capture One (CSV, numbered list)
-- Upload **retouched finals** mapped to picked assets (or replace in place)
-
-Set state to **`finalized`**. **Same link** updates for the client — no new URL.
-
-### 5. Client download (mobile, same link)
-
-When **`finalized`**:
-
-- One-click **Download all** (ZIP of their picks, full-res)
-- Per-image download
-- Optional email to client when finals are ready (same link in body)
+Private albums never appear on the public site until the photographer explicitly showcases them.
 
 ---
 
-## Portfolio builder mode
+## Visibility model
 
-Not a generic site builder. **Controller + previewer** for photo-native sites:
+| Toggle | Client delivery | Public website |
+|--------|-----------------|----------------|
+| Client only | ✓ | — |
+| Site only | — | ✓ |
+| Both | ✓ (during delivery) | ✓ (after showcase) |
+| Neither | Hidden | Hidden |
 
-- Pick template → assign **public** albums to sections (hero, masonry, editorial strip, about, contact)
-- Live preview matches published output
-- **Publish** deploys static/SSR site to:
-  - `{slug}.vega.menhir-holdings.com`, or
-  - Custom domain (CNAME → Vercel)
-- Student tier: Vega subdomain only. Pro: custom domain.
-
-Delivery mode does **not** appear in the published portfolio shell — only via `/deliver/{token}` (or custom domain path later).
+Showcase step sets `visibleOnSite` on chosen assets and registers the album in site sections.
 
 ---
 
 ## Taxonomy
 
 ```
-Workspace (photographer / student)
-├── PublishedSite (slug, custom domain, deploy target)
-├── Projects (optional grouping: "Spring 2026", "Smith wedding")
-│   └── Albums
-│       ├── Categories (client mobile tabs)
-│       ├── Assets (visibility, sort, pick state)
-│       └── DeliverySession (token, lifecycle state, PIN)
-└── Site sections (portfolio builder — references public albums)
+Workspace (photographer)
+├── Site (slug, sections, hero, publish state)     ← primary object
+├── Albums (shoots)
+│   ├── Categories · Assets · DeliverySession
+│   └── showcasedAt (when added to site)
+└── PublishedSite (deploy target, custom domain)
 ```
 
-**Album delivery states:** `draft` → `ready_to_pick` → `picked` → `finalized`
-
----
-
-## Upload sources
-
-| Source | v1 | Notes |
-|--------|----|-------|
-| Local folder / ZIP | ✓ | Batch creates album; resumable multipart |
-| Drag-drop in admin | ✓ | Into album or uncategorized |
-| Google Drive folder | ✓ | OAuth or read-only share link |
-| Dropbox | later | Same pattern |
-
----
-
-## Notifications (fill-in)
-
-| Event | Who | Channel |
-|-------|-----|---------|
-| Delivery link shared | Client | SMS/email optional (photographer triggers) |
-| Client submitted picks | Photographer | Email + admin badge |
-| Finals ready | Client | Email with same delivery link |
-| Storage near cap | Photographer | Email |
-
----
-
-## Pricing direction
-
-- **Student:** free or low tier — subdomain portfolio, limited storage, delivery on paid events
-- **Pro:** custom domain, higher storage, unlimited delivery albums
-- **Per-event pass-through:** $12–25 on client invoice for large weddings
+**Album delivery states:** `draft` → `ready_to_pick` → `picked` → `finalized` → showcased (album.showcasedAt set)
 
 ---
 
@@ -141,18 +109,31 @@ Workspace (photographer / student)
 | Role | URL |
 |------|-----|
 | Product + admin | `https://vega.menhir-holdings.com` |
-| Admin workspace | `/admin` |
-| Album curator | `/admin/albums/{id}` |
-| Portfolio builder | `/admin/builder` |
+| **Site home** | `/admin` |
+| Site editor | `/admin/site` |
+| Albums (shoots) | `/admin/albums` |
+| Album workflow | `/admin/albums/{id}` |
 | Client delivery | `/deliver/{token}` |
 | Published site | `/s/{slug}` |
 
-## Implementation status (2026-06-29)
+---
 
-- ✅ Marketing home, admin shell, album CRUD API
-- ✅ Batch upload (files + folder), curate visibility/order
-- ✅ Delivery lifecycle states + client pick UI (mobile)
-- ✅ Pick submission → photographer view → finalize → client download
-- ✅ Portfolio builder + published site at `/s/{slug}`
-- ⏳ Custom domain publish · Google Drive ingest · email notifications
-- ⏳ `BLOB_READ_WRITE_TOKEN` on Vercel for durable production storage
+## Pricing direction
+
+- **Student:** subdomain portfolio, limited storage, delivery per event
+- **Pro:** custom domain, unlimited albums, automatic showcase sections
+- Site management is the anchor; delivery is included value
+
+---
+
+## Implementation status (2026-07-06)
+
+- ✅ Website-first admin home (`/admin`) with site status + publish
+- ✅ Site editor at `/admin/site` (controller + preview)
+- ✅ Album workflow: ingest → curate → deliver → retouch → showcase
+- ✅ Showcase API — add album gallery to site, mark site-visible assets
+- ✅ Client delivery (pick link, lightbox, review, ZIP)
+- ✅ Blob media + auth scaffold + event bus
+- ⏳ Clerk auth · Resend notifications · custom domain · multi-gallery site renderer polish
+
+See [UX.md](./UX.md) · [SYSTEM.md](./SYSTEM.md)

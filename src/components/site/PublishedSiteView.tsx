@@ -6,10 +6,16 @@ import { FeaturedGallerySection } from "@/components/sections/FeaturedGallerySec
 import { HeroSection } from "@/components/sections/HeroSection";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 
+function siteAssets(album: Album) {
+  return album.assets
+    .filter((a) => a.visibleOnSite)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
 function toGalleryImages(assets: Album["assets"]): GalleryImage[] {
   return assets.map((a) => ({
     id: a.id,
-    src: a.previewUrl,
+    src: a.finalUrl ?? a.previewUrl,
     alt: a.alt,
     width: a.width,
     height: a.height,
@@ -23,25 +29,15 @@ type PublishedSiteViewProps = {
 };
 
 export function PublishedSiteView({ site, albums }: PublishedSiteViewProps) {
-  const gallerySection = site.sections.find((s) => s.type === "gallery");
-  const editorialSection = site.sections.find((s) => s.type === "editorial");
-
-  const galleryAlbum = albums.find((a) => a.id === gallerySection?.albumId) ?? albums[0];
-  const galleryImages = galleryAlbum ? toGalleryImages(galleryAlbum.assets) : [];
-
-  const editorialAlbum = albums.find((a) => a.id === editorialSection?.albumId) ?? galleryAlbum;
-  const editorialStart = editorialSection?.type === "editorial" ? editorialSection.startIndex ?? 0 : 0;
-  const editorialCount = editorialSection?.type === "editorial" ? editorialSection.count ?? 4 : 4;
-  const stripImages = editorialAlbum
-    ? toGalleryImages(editorialAlbum.assets.slice(editorialStart, editorialStart + editorialCount))
-    : [];
-
   const heroImage = {
     src: site.heroImageUrl,
     alt: site.heroTitle,
     width: 2400,
     height: 3600,
   };
+
+  const gallerySections = site.sections.filter((s) => s.type === "gallery");
+  const editorialSection = site.sections.find((s) => s.type === "editorial");
 
   return (
     <>
@@ -52,15 +48,33 @@ export function PublishedSiteView({ site, albums }: PublishedSiteViewProps) {
           title={site.heroTitle}
           subtitle={site.heroSubtitle}
         />
-        {galleryImages.length > 0 && (
-          <FeaturedGallerySection
-            images={galleryImages}
-            layout={gallerySection?.type === "gallery" ? gallerySection.layout : "masonry"}
-            title={gallerySection?.type === "gallery" ? gallerySection.title : undefined}
-            subtitle={gallerySection?.type === "gallery" ? gallerySection.subtitle : undefined}
-          />
-        )}
-        {stripImages.length > 0 && <EditorialStripSection images={stripImages} />}
+
+        {gallerySections.map((section) => {
+          if (section.type !== "gallery") return null;
+          const album = albums.find((a) => a.id === section.albumId);
+          const images = album ? toGalleryImages(siteAssets(album)) : [];
+          if (!images.length) return null;
+          return (
+            <FeaturedGallerySection
+              key={section.id}
+              images={images}
+              layout={section.layout}
+              title={section.title}
+              subtitle={section.subtitle}
+            />
+          );
+        })}
+
+        {editorialSection?.type === "editorial" && (() => {
+          const album = albums.find((a) => a.id === editorialSection.albumId);
+          const assets = album ? siteAssets(album) : [];
+          const start = editorialSection.startIndex ?? 0;
+          const count = editorialSection.count ?? 4;
+          const stripImages = toGalleryImages(assets.slice(start, start + count));
+          if (!stripImages.length) return null;
+          return <EditorialStripSection key={editorialSection.id} images={stripImages} />;
+        })()}
+
         <section
           id="about"
           className="mx-auto max-w-2xl px-[var(--space-sm)] py-[var(--space-2xl)] sm:px-[var(--space-md)] sm:py-[var(--space-3xl)]"
@@ -81,9 +95,6 @@ export function PublishedSiteView({ site, albums }: PublishedSiteViewProps) {
             {site.contactEmail}
           </a>
         </section>
-        <footer className="px-[var(--space-sm)] pb-[var(--space-lg)] pt-[var(--space-md)] sm:px-[var(--space-md)]">
-          <p className="text-sm text-ink-faint">Published with Vega</p>
-        </footer>
       </main>
     </>
   );

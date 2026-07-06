@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { emit } from "@/lib/events";
 import { mutateStore } from "@/lib/store";
 import type { ClientPickSubmission } from "@/types/album";
 
@@ -18,6 +19,11 @@ export async function POST(request: Request, { params }: RouteParams) {
   }
 
   let error: string | null = null;
+  let albumId = "";
+  let albumName = "";
+  let sessionId = "";
+  let pickCount = 0;
+  let clientEmail: string | undefined;
 
   await mutateStore((store) => {
     const session = store.deliverySessions.find((s) => s.token === token);
@@ -78,6 +84,11 @@ export async function POST(request: Request, { params }: RouteParams) {
 
     album.deliveryState = "picked";
     session.submittedAt = new Date().toISOString();
+    albumId = album.id;
+    albumName = album.name;
+    sessionId = session.id;
+    pickCount = body.picks.length;
+    clientEmail = session.clientEmail;
 
     const submission: ClientPickSubmission = {
       deliverySessionId: session.id,
@@ -95,6 +106,15 @@ export async function POST(request: Request, { params }: RouteParams) {
     const status = error === "Invalid PIN" ? 401 : 400;
     return NextResponse.json({ error }, { status });
   }
+
+  await emit({
+    type: "picks.submitted",
+    albumId,
+    albumName,
+    sessionId,
+    pickCount,
+    clientEmail,
+  });
 
   return NextResponse.json({ ok: true });
 }

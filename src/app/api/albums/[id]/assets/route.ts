@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { newId } from "@/lib/id";
+import { isAuthError, requireAuth } from "@/lib/auth/guard";
+import { createAssetsFromUpload, slugify } from "@/lib/storage/upload-asset";
 import { mutateStore } from "@/lib/store";
-import type { MediaAsset } from "@/types/album";
+import type { Category, MediaAsset } from "@/types/album";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -11,11 +12,34 @@ type UploadBody = {
     dataUrl: string;
     width: number;
     height: number;
+    categoryName?: string;
   }>;
   categoryId?: string | null;
 };
 
+function ensureCategory(
+  album: { id: string; categories: Category[] },
+  name: string,
+): string {
+  const slug = slugify(name);
+  let cat = album.categories.find((c) => c.slug === slug);
+  if (!cat) {
+    cat = {
+      id: crypto.randomUUID(),
+      albumId: album.id,
+      name,
+      slug,
+      sortOrder: album.categories.length,
+    };
+    album.categories.push(cat);
+  }
+  return cat.id;
+}
+
 export async function POST(request: Request, { params }: RouteParams) {
+  const auth = await requireAuth();
+  if (isAuthError(auth)) return auth;
+
   const { id } = await params;
   const body = (await request.json()) as UploadBody;
 
@@ -25,38 +49,41 @@ export async function POST(request: Request, { params }: RouteParams) {
 
   let added: MediaAsset[] = [];
 
-  await mutateStore((store) => {
-    const album = store.albums.find((a) => a.id === id);
+  const store = await mutateStore(async (s) => {
+    const album = s.albums.find((a) => a.id === id);
     if (!album) return;
 
     const baseOrder = album.assets.length;
-    added = body.files.map((file, i) => ({
-      id: newId(),
-      projectId: album.projectId,
-      albumId: album.id,
-      categoryId: body.categoryId ?? null,
-      filename: file.filename,
-      previewUrl: file.dataUrl,
-      originalUrl: file.dataUrl,
-      width: file.width,
-      height: file.height,
-      alt: file.filename.replace(/\.[^.]+$/, "").replace(/[-_]/g, " "),
-      sortOrder: baseOrder + i,
-      visibleToClient: true,
-      visibleOnSite: false,
-      selectionState: "none" as const,
-    }));
+    const filesWithCat = body.files.map((file) => {
+      let categoryId = body.categoryId ?? null;
+      if (file.categoryName && !categoryId) {
+        categoryId = ensureCategory(album, file.categoryName);
+      }
+      return {
+        filename: file.filename,
+        dataUrl: file.dataUrl,
+        width: file.width,
+        height: file.height,
+        categoryId,
+      };
+    });
+
+    added = await createAssetsFromUpload(
+      s.workspace.id,
+      album.id,
+      album.projectId,
+      filesWithCat,
+      baseOrder,
+    );
 
     album.assets.push(...added);
     if (!album.coverAssetId && added[0]) album.coverAssetId = added[0].id;
-    if (album.deliveryState === "draft" && album.assets.length > 0) {
-      album.deliveryState = "draft";
-    }
   });
 
   if (!added.length) {
     return NextResponse.json({ error: "Album not found" }, { status: 404 });
   }
 
+  void store;
   return NextResponse.json({ assets: added }, { status: 201 });
 }

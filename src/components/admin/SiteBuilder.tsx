@@ -2,24 +2,17 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import type { Album } from "@/types/album";
 import type { SiteBuilderConfig } from "@/types/site";
 
 export function SiteBuilder() {
   const [site, setSite] = useState<SiteBuilderConfig | null>(null);
-  const [albums, setAlbums] = useState<Album[]>([]);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const [siteRes, albumsRes] = await Promise.all([
-      fetch("/api/site"),
-      fetch("/api/albums"),
-    ]);
+    const siteRes = await fetch("/api/site");
     const siteData = (await siteRes.json()) as { site: SiteBuilderConfig };
-    const albumsData = (await albumsRes.json()) as { albums: Album[] };
     setSite(siteData.site);
-    setAlbums(albumsData.albums);
   }, []);
 
   useEffect(() => {
@@ -47,19 +40,17 @@ export function SiteBuilder() {
 
   if (!site) return <p className="p-8 text-ink-muted">Loading builder…</p>;
 
-  const galleryAlbumId = site.sections.find((s) => s.type === "gallery")?.albumId ?? albums[0]?.id;
-
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-6">
         <div>
           <Link href="/admin" className="mb-2 inline-block text-sm text-ink-muted hover:text-ink">
-            ← Albums
+            ← Your site
           </Link>
-          <h1 className="text-display-lg font-light">Portfolio builder</h1>
+          <h1 className="text-display-lg font-light">Site editor</h1>
           <p className="mt-2 text-sm text-ink-muted">
-            Controller + preview. Publish to{" "}
-            <code className="text-ink">/s/{site.slug}</code> or your custom domain later.
+            Your creative direction — copy, structure, publish. Albums feed in after each
+            showcase.
           </p>
         </div>
         <div className="flex gap-2">
@@ -147,8 +138,8 @@ export function SiteBuilder() {
             />
           </div>
           <p className="mt-4 text-xs text-ink-faint">
-            Public gallery pulls images marked <strong>Site</strong> in album curator.
-            Featured album: {albums.find((a) => a.id === galleryAlbumId)?.name ?? "—"}
+            Gallery sections are added when you showcase a completed shoot. Images marked{" "}
+            <strong>Site</strong> in the album curator appear here.
           </p>
         </section>
       </div>

@@ -59,6 +59,8 @@ export type Album = {
   deliveryState: AlbumDeliveryState;
   /** Max images client may pick (undefined = no limit) */
   pickLimit?: number;
+  /** When this shoot was added to the public portfolio */
+  showcasedAt?: string;
 };
 
 /** Shareable client session — one link for pick + download */

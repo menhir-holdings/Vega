@@ -1,5 +1,5 @@
-import { SiteBuilder } from "@/components/admin/SiteBuilder";
+import { redirect } from "next/navigation";
 
-export default function BuilderPage() {
-  return <SiteBuilder />;
+export default function BuilderRedirect() {
+  redirect("/admin/site");
 }

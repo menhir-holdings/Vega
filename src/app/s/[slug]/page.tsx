@@ -24,5 +24,13 @@ export default async function PublishedSitePage({ params }: PageProps) {
     notFound();
   }
 
-  return <PublishedSiteView site={store.site} albums={store.albums} />;
+  return (
+    <PublishedSiteView
+      site={store.site}
+      albums={store.albums.map((album) => ({
+        ...album,
+        assets: album.assets.filter((a) => a.visibleOnSite),
+      }))}
+    />
+  );
 }

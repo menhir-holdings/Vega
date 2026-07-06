@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { downloadImagesAsZip } from "@/lib/download-zip";
 import type { AlbumDeliveryState, Category } from "@/types/album";
+import { DeliverLightbox } from "./DeliverLightbox";
 
 type ClientAsset = {
   id: string;
@@ -45,8 +47,11 @@ export function DeliverClient({ token }: DeliverClientProps) {
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [activeCategory, setActiveCategory] = useState<string | "all">("all");
   const [submitting, setSubmitting] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const load = useCallback(
     async (pinValue?: string) => {
@@ -65,6 +70,9 @@ export function DeliverClient({ token }: DeliverClientProps) {
       setPinNeeded(false);
       if (json.submission) {
         setSelected(new Set(json.submission.picks.map((p) => p.assetId)));
+        json.submission.picks.forEach((p) => {
+          if (p.note) setNotes((n) => ({ ...n, [p.assetId]: p.note! }));
+        });
         setDone(true);
       }
     },
@@ -117,6 +125,7 @@ export function DeliverClient({ token }: DeliverClientProps) {
       return;
     }
     setDone(true);
+    setShowReview(false);
     setSubmitting(false);
     await load(pin);
   };
@@ -132,6 +141,8 @@ export function DeliverClient({ token }: DeliverClientProps) {
     const a = document.createElement("a");
     a.href = url;
     a.download = asset.filename;
+    a.target = "_blank";
+    a.rel = "noopener";
     a.click();
   };
 
@@ -140,9 +151,17 @@ export function DeliverClient({ token }: DeliverClientProps) {
     const finals = data.album.assets.filter(
       (a) => a.selectionState === "picked" && (a.finalUrl || a.previewUrl),
     );
-    for (const asset of finals) {
-      downloadAsset(asset);
-      await new Promise((r) => setTimeout(r, 300));
+    setDownloading(true);
+    try {
+      await downloadImagesAsZip(
+        finals.map((a) => ({
+          url: a.finalUrl ?? a.previewUrl,
+          filename: a.filename,
+        })),
+        `${data.album.name.replace(/\s+/g, "-")}-finals.zip`,
+      );
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -191,6 +210,19 @@ export function DeliverClient({ token }: DeliverClientProps) {
   const { album, canPick, canDownload } = data;
   const state = album.deliveryState;
 
+  const statusMessage =
+    state === "ready_to_pick" && !done
+      ? "Tap an image to view full size, then heart your favorites"
+      : state === "ready_to_pick" && done
+        ? "Selection sent — your photographer will retouch your picks"
+        : state === "picked"
+          ? "Your photographer is preparing your images"
+          : state === "finalized" && canDownload
+            ? "Your retouched images are ready to download"
+            : state === "draft"
+              ? "This gallery isn't open yet — check back soon"
+              : "";
+
   return (
     <div className="mx-auto min-h-[100dvh] max-w-lg pb-28">
       <header className="sticky top-0 z-20 border-b border-line bg-paper/95 px-4 py-4 backdrop-blur-sm">
@@ -198,13 +230,9 @@ export function DeliverClient({ token }: DeliverClientProps) {
         <h1 className="font-[family-name:var(--font-cormorant)] text-2xl font-light">
           {album.name}
         </h1>
-        <p className="mt-1 text-xs text-ink-faint">
-          {state === "ready_to_pick" && !done && "Tap hearts to select favorites"}
-          {state === "ready_to_pick" && done && "Selection sent — your photographer will retouch"}
-          {state === "picked" && "Your photographer is preparing finals"}
-          {state === "finalized" && canDownload && "Your retouched images are ready"}
-          {state === "draft" && "Gallery not yet published"}
-        </p>
+        {statusMessage && (
+          <p className="mt-2 text-xs leading-relaxed text-ink-muted">{statusMessage}</p>
+        )}
       </header>
 
       {album.categories.length > 0 && (
@@ -241,14 +269,14 @@ export function DeliverClient({ token }: DeliverClientProps) {
       )}
 
       {canPick && !done && (
-        <p className="px-4 py-3 text-center text-sm text-ink-muted">
+        <p className="sticky top-[theme(spacing.0)] z-10 border-b border-line bg-paper px-4 py-2 text-center text-sm text-ink-muted">
           {selected.size}
           {album.pickLimit ? ` / ${album.pickLimit}` : ""} selected
         </p>
       )}
 
       <div className="grid grid-cols-2 gap-1 px-1 pt-1">
-        {filteredAssets.map((asset) => {
+        {filteredAssets.map((asset, i) => {
           const isSelected = selected.has(asset.id);
           const showDownload = canDownload && asset.selectionState === "picked";
 
@@ -257,7 +285,10 @@ export function DeliverClient({ token }: DeliverClientProps) {
               <button
                 type="button"
                 className="relative h-full w-full"
-                onClick={() => (showDownload ? downloadAsset(asset) : toggle(asset.id))}
+                onClick={() => {
+                  if (showDownload) downloadAsset(asset);
+                  else setLightboxIndex(i);
+                }}
                 aria-pressed={isSelected}
                 aria-label={asset.alt}
               >
@@ -269,9 +300,14 @@ export function DeliverClient({ token }: DeliverClientProps) {
                 />
                 {canPick && !done && (
                   <span
-                    className={`absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full text-lg transition-colors ${
-                      isSelected ? "bg-ink text-paper" : "bg-paper/80 text-ink-faint"
+                    className={`absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-full text-lg ${
+                      isSelected ? "bg-ink text-paper" : "bg-paper/85 text-ink-faint"
                     }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggle(asset.id);
+                    }}
+                    role="button"
                     aria-hidden
                   >
                     {isSelected ? "♥" : "♡"}
@@ -283,47 +319,105 @@ export function DeliverClient({ token }: DeliverClientProps) {
                   </span>
                 )}
               </button>
-              {canPick && isSelected && !done && (
-                <input
-                  type="text"
-                  placeholder="Retouch note (optional)"
-                  className="absolute inset-x-0 bottom-0 border-t border-line bg-paper/95 px-2 py-1.5 text-[11px]"
-                  value={notes[asset.id] ?? ""}
-                  onChange={(e) => setNotes((n) => ({ ...n, [asset.id]: e.target.value }))}
-                />
-              )}
             </div>
           );
         })}
       </div>
 
+      <DeliverLightbox
+        assets={filteredAssets}
+        index={lightboxIndex}
+        selected={selected}
+        notes={notes}
+        canPick={canPick && !done}
+        pickLimit={album.pickLimit}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+        onToggle={toggle}
+        onNoteChange={(id, note) => setNotes((n) => ({ ...n, [id]: note }))}
+      />
+
+      {showReview && (
+        <div className="fixed inset-0 z-40 flex flex-col bg-paper">
+          <header className="border-b border-line px-4 py-4">
+            <h2 className="font-[family-name:var(--font-cormorant)] text-xl font-light">
+              Review your picks
+            </h2>
+            <p className="text-sm text-ink-muted">{selected.size} images selected</p>
+          </header>
+          <ul className="flex-1 overflow-y-auto px-4 py-4">
+            {[...selected].map((id) => {
+              const asset = album.assets.find((a) => a.id === id);
+              if (!asset) return null;
+              return (
+                <li key={id} className="mb-4 flex gap-3 border-b border-line pb-4">
+                  <div className="h-20 w-16 shrink-0 overflow-hidden bg-stone">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={asset.previewUrl} alt="" className="h-full w-full object-cover" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm">{asset.filename}</p>
+                    {notes[id] && <p className="text-xs text-ink-muted">{notes[id]}</p>}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => toggle(id)}
+                    className="text-xs text-ink-muted underline"
+                  >
+                    Remove
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="border-t border-line p-4">
+            <button
+              type="button"
+              disabled={submitting}
+              onClick={() => void submit()}
+              className="mb-2 w-full border border-ink bg-ink py-4 text-sm tracking-[0.12em] text-paper disabled:opacity-40"
+            >
+              {submitting ? "Sending…" : "Confirm & send"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowReview(false)}
+              className="w-full py-2 text-sm text-ink-muted"
+            >
+              Back to gallery
+            </button>
+          </div>
+        </div>
+      )}
+
       {error && (
-        <p className="fixed bottom-20 inset-x-4 text-center text-sm text-red-800">{error}</p>
+        <p className="fixed bottom-20 inset-x-4 z-30 text-center text-sm text-red-800">{error}</p>
       )}
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper/95 p-4 backdrop-blur-sm">
         {canPick && !done && (
           <button
             type="button"
-            disabled={submitting || selected.size === 0}
-            onClick={() => void submit()}
+            disabled={selected.size === 0}
+            onClick={() => setShowReview(true)}
             className="w-full border border-ink bg-ink py-4 text-sm tracking-[0.12em] text-paper disabled:opacity-40"
           >
-            {submitting ? "Sending…" : `Submit ${selected.size} pick${selected.size === 1 ? "" : "s"}`}
+            Review & submit ({selected.size})
           </button>
         )}
         {canDownload && (
           <button
             type="button"
+            disabled={downloading}
             onClick={() => void downloadAll()}
-            className="w-full border border-ink bg-ink py-4 text-sm tracking-[0.12em] text-paper"
+            className="w-full border border-ink bg-ink py-4 text-sm tracking-[0.12em] text-paper disabled:opacity-50"
           >
-            Download all finals
+            {downloading ? "Preparing ZIP…" : "Download all finals"}
           </button>
         )}
         {done && !canDownload && state !== "finalized" && (
           <p className="text-center text-sm text-ink-muted">
-            Thanks — you&apos;ll get the same link when downloads are ready.
+            Same link when downloads are ready — no new URL needed.
           </p>
         )}
         <p className="mt-3 text-center text-[10px] text-ink-faint">

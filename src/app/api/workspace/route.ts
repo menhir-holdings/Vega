@@ -10,6 +10,7 @@ export async function GET() {
       name: a.name,
       slug: a.slug,
       deliveryState: a.deliveryState,
+      showcasedAt: a.showcasedAt,
       assetCount: a.assets.length,
       visibleToClient: a.assets.filter((x) => x.visibleToClient).length,
       visibleOnSite: a.assets.filter((x) => x.visibleOnSite).length,

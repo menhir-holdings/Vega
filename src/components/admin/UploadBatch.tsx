@@ -32,11 +32,19 @@ export function UploadBatch({ albumId, onComplete }: UploadBatchProps) {
           setProgress(`Compressing ${done} / ${total}…`);
         });
 
+        const filesWithCategories = compressed.map((c, i) => {
+          const file = list[i];
+          const relative = (file as File & { webkitRelativePath?: string }).webkitRelativePath;
+          const categoryName =
+            relative && relative.includes("/") ? relative.split("/")[0] : undefined;
+          return { ...c, categoryName };
+        });
+
         setProgress("Uploading…");
         const res = await fetch(`/api/albums/${albumId}/assets`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ files: compressed }),
+          body: JSON.stringify({ files: filesWithCategories }),
         });
 
         if (!res.ok) {
