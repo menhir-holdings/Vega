@@ -31,3 +31,8 @@ npm run dev
 ## Repo
 
 https://github.com/ledoit/Vega
+
+
+## License
+
+All Rights Reserved © Menhir Holdings
