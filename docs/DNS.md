@@ -1,6 +1,10 @@
-# DNS — vega.menhir-holdings.com
+# DNS — vega.menhir-holdings.com (unpaid)
 
-Wire **Vega** through Cloudflare to Vercel. Same rules as SyncStation — do not touch Zoho mail records.
+**Bookmark now:** https://vega-menhir-holdings.vercel.app
+
+`menhir-holdings.com` is unpaid. Leftover Cloudflare may still resolve; do not 308 vercel.app to `.com`.
+
+Wire **Vega** through Cloudflare to Vercel when a domain is paid again. Same rules as SyncStation — do not touch Zoho mail records.
 
 ## Cloudflare record
 

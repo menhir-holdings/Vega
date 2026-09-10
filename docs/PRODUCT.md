@@ -108,7 +108,7 @@ Workspace (photographer)
 
 | Role | URL |
 |------|-----|
-| Product + admin | `https://vega.menhir-holdings.com` |
+| Product + admin | `https://vega-menhir-holdings.vercel.app` |
 | **Site home** | `/admin` |
 | Site editor | `/admin/site` |
 | Albums (shoots) | `/admin/albums` |
