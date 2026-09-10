@@ -1,108 +1,72 @@
 # Vega — UX specification
 
-Vega is a **website manager** for photographers. Client delivery is a feature inside the shoot workflow — it culminates in two outcomes: the client's album and new work on the photographer's site.
+Vega is a **photographer website** with a quiet owner desk. Visitors never see a product. The owner never learns a CMS.
 
 ---
 
 ## Design principle
 
-**Your site is home. Shoots feed it.**
+**The live site is the product. The desk is how you ask.**
 
-The photographer opens Vega to manage their portfolio — not to "use a delivery tool." Every album is a shoot that may end with client handoff *and* new showcase images. Creative control stays with the photographer; Vega handles publish, delivery links, and the handoff plumbing.
+Non-tech clients want a sleek professional site, control over the first look and later changes, and no burden. They do not know what they want yet. Vega holds the site; they write when something should move.
 
 | Stakeholder | Center of gravity | Success |
 |-------------|-------------------|---------|
-| **Photographer** | Their live website + what's next to publish | Shoot completes → client happy → site updated without a second workflow |
-| **Client** | One link for picks and downloads | Done on mobile in one session; never sees "Vega" as a product |
+| **Visitor** | The photographer's public site | Feels like a studio, not a platform |
+| **Owner** | `/desk` — what's live, preview, ask | Change without a labyrinth |
 
 ---
 
-## Photographer — two surfaces
+## Two surfaces (skeleton)
 
-### A. Site home (`/admin`) — default landing
+### A. Public site (`/`) — always on
 
-**Question:** "How does my site look, and what needs my attention?"
+**Question:** "Whose work is this?"
 
-- **Site card** — live URL, publish status, last updated, **Edit site** / **Preview**
-- **Pipeline** — albums by stage (draft · awaiting client · retouch · ready to showcase)
-- **Showcase queue** — finalized shoots not yet on the site
-- **New shoot** — creates album, enters workflow
+Patterns stolen (not cloned):
 
-Site is the anchor; albums are work feeding the site.
+- [Open — still + name](https://mobbin.com/screens/a1ac1617-7316-4679-ae32-4b3d207dc4d3)
+- [Locomotive — full-bleed plate](https://mobbin.com/sites/sections/6a2f519f-af72-4525-a6ca-2ef3457bdf63)
+- [KOBU — huge quiet type](https://mobbin.com/sites/sections/92720ac4-a34f-4460-854c-ba4c969c697e)
 
-### B. Site editor (`/admin/site`) — creative control
+Plate → named still → selected work → surname wordmark → about / inquire. No explore, follow, or community.
 
-**Question:** "How do I want my portfolio to read?"
+### B. Owner desk (`/desk`) — one quiet screen
 
-- Controller + live preview (not a generic page builder)
-- Hero title, subtitle, about, contact
-- Section structure: which albums appear as galleries / editorial strips
-- **Publish** — deploys to `/s/{slug}`; photographer chooses when
+**Question:** "What's live, and how do I change it?"
 
-Delivery UI never appears here. This is portfolio identity.
+Patterns stolen:
 
-### C. Album workflow (`/admin/albums/{id}`) — per shoot
+- [Squarespace — editor + live site](https://mobbin.com/screens/8e63e795-8387-4194-8307-5f387a0c261a)
+- [Framer — canvas with live page](https://mobbin.com/screens/7742c3d7-a2c0-4e62-ac05-3ee229e284bd)
 
-Five steps; delivery is steps 3–4, showcase is the culmination:
+- What's live (status + pages)
+- Preview of `/` in a desk frame
+- Ask for a change (write it; Vega takes it from there)
 
-```
-Upload → Curate → Deliver → Retouch → Showcase
-         │          │          │            │
-         │          │          │            └── new gallery on YOUR site
-         │          │          └── client ZIP download
-         │          └── client pick link (feature)
-         └── client vs site visibility
-```
-
-#### Upload
-Batch ingest. Folder → categories. Continue when thumbnails land.
-
-#### Curate
-Per-image **Client** / **Site** intent toggles (site may stay off until showcase confirms). Reorder, cover, categories.
-
-#### Deliver (feature)
-Delivery card: PIN, email, pick limit, **Open for picking**. One link for the client. Not the product center — a step in the shoot.
-
-#### Retouch
-Pick list, CSV, upload finals, **Release downloads** to client.
-
-#### Showcase (culmination)
-**Question:** "What from this shoot goes on my website?"
-
-- Grid of picks/finals; all selected by default
-- Section title defaults to album name
-- **Add to my website** → marks `visibleOnSite`, appends gallery section, optional republish
-- Photographer sees preview of how it will read on the site
+No site-builder chrome, no album pipeline, no Clerk wall for this skeleton.
 
 ---
 
-## Client journey (unchanged — intentionally invisible)
+## Anti-patterns
 
-Mobile, one link, no account:
-
-1. PIN (if set) → gallery → lightbox → review → submit
-2. Wait (same link)
-3. Download finals (ZIP)
-
-Client never learns about the photographer's website manager.
+| Kill | Instead |
+|------|---------|
+| `/` as SaaS marketing for a creator network | `/` is the photographer site |
+| Explore / follow / appreciate | Unwired; not linked |
+| `{slug}.vega…` bounce to unpaid `.com` | Canonical `vega-menhir-holdings.vercel.app` |
+| CMS as the home screen | Desk: live + preview + ask |
 
 ---
 
-## Anti-patterns (recentered)
+## Leftover (unwired)
 
-| Old framing | New framing |
-|-------------|-------------|
-| Admin home = album list | Admin home = **your website** |
-| Portfolio builder = equal peer | Site editor = **primary creative surface** |
-| Delivery = the product | Delivery = **feature inside album** |
-| Finals = done | Finals = done **for client**; showcase = done **for site** |
-| `visibleOnSite` toggled during curate only | Showcase step **confirms** what goes public |
+`/admin`, `/s/{slug}`, and `/deliver/{token}` may still exist. They are not the default experience.
 
 ---
 
 ## v1 success criteria
 
-1. Photographer lands on site home and sees live portfolio status.
-2. One shoot: upload → client picks → finals → **add to website** in one session.
-3. Published site shows new gallery section without manual code or second tool.
-4. Photographer retains full creative control over copy, structure, and what goes public.
+1. A stranger opening `/` sees a professional photographer site.
+2. `/desk` answers what's live, shows a preview, and accepts a change request.
+3. No discoverability layer is required to use the product.

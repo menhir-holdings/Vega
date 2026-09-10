@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Libre_Franklin } from "next/font/google";
+import { Cormorant_Garamond, Libre_Franklin, Syne } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -16,10 +16,18 @@ const libreFranklin = Libre_Franklin({
   display: "swap",
 });
 
+const syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Vega — Photo portfolios & client delivery",
+  title: "Iris Calder — Photographer",
   description:
-    "Portfolio builder and client delivery for photo students and photographers. Albums, picks, retouch, publish.",
+    "Portraits and stills. Photographs made slowly — for people who would rather be seen than staged.",
+  metadataBase: new URL("https://vega-menhir-holdings.vercel.app"),
 };
 
 export default function RootLayout({
@@ -30,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${libreFranklin.variable} h-full`}
+      className={`${cormorant.variable} ${libreFranklin.variable} ${syne.variable} h-full`}
     >
       <body className="min-h-full bg-paper text-ink antialiased">
         <a

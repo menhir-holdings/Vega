@@ -1,6 +1,6 @@
 # Vega — system design
 
-**Vega is a website manager.** The published site (`SiteBuilderConfig`) is the primary object; albums are shoots that feed client delivery and showcase back into the site.
+**Vega is a photographer website plus a quiet desk.** Canonical host: `vega-menhir-holdings.vercel.app`. Album/admin machinery may still exist in-tree; it is not the default `/`.
 
 ---
 
@@ -8,29 +8,18 @@
 
 ```mermaid
 flowchart TB
-  subgraph public [Public]
-    Site["/s/{slug}"]
+  subgraph live [Always on]
+    Public["/ photographer site"]
+    Desk["/desk what's live · preview · ask"]
+  end
+
+  subgraph leftover [Unwired leftover]
+    Admin["/admin"]
+    Slug["/s/{slug}"]
     Deliver["/deliver/{token}"]
   end
 
-  subgraph admin [Photographer — website manager]
-    Home["/admin — site home"]
-    Editor["/admin/site — creative control"]
-    Albums["/admin/albums"]
-    Workflow["/admin/albums/{id}\nUpload→Curate→Deliver→Retouch→Showcase"]
-  end
-
-  subgraph lib [Domain]
-    Showcase["lib/site/showcase.ts"]
-    Store["lib/store"]
-    Blob["lib/storage"]
-  end
-
-  Workflow -->|showcase| Showcase
-  Showcase -->|sections + visibleOnSite| Store
-  Editor --> Store
-  Store --> Site
-  Workflow -->|delivery feature| Deliver
+  Desk -->|preview iframe| Public
 ```
 
 ---
@@ -182,9 +171,7 @@ Handlers are no-ops until `RESEND_API_KEY` is set.
 | `CLERK_SECRET_KEY` | Phase 2 | Multi-tenant auth |
 | `RESEND_API_KEY` | Phase 2 | Transactional email |
 
-Domain: `vega.menhir-holdings.com` (see [DNS.md](./DNS.md)).
-
-Future: `{slug}.vega.menhir-holdings.com` via wildcard CNAME + middleware host routing.
+Domain: [https://vega-menhir-holdings.vercel.app](https://vega-menhir-holdings.vercel.app) (see [DNS.md](./DNS.md)). Unpaid `.com` is not canonical. Photographer subdomains are not in this skeleton.
 
 ---
 
