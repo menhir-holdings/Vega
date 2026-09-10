@@ -8,7 +8,7 @@
 | A manager that handles delivery *for* you | A separate "gallery app" bolted onto a website |
 | One album model: private delivery → public showcase | Two disconnected products |
 
-Hosted at **https://vega.menhir-holdings.com**. Published portfolios: `{slug}.vega.menhir-holdings.com` or custom domain.
+Hosted at **https://vega-menhir-holdings.vercel.app** while `menhir-holdings.com` is unpaid. Published portfolios: `{slug}.vega.menhir-holdings.com` or custom domain.
 
 ---
 
@@ -108,7 +108,7 @@ Workspace (photographer)
 
 | Role | URL |
 |------|-----|
-| Product + admin | `https://vega.menhir-holdings.com` |
+| Product + admin | `https://vega-menhir-holdings.vercel.app` |
 | **Site home** | `/admin` |
 | Site editor | `/admin/site` |
 | Albums (shoots) | `/admin/albums` |

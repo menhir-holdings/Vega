@@ -2,7 +2,7 @@
 
 Photo portfolio builder + client delivery for students and photographers.
 
-**Live:** https://vega.menhir-holdings.com
+**Live:** https://vega-menhir-holdings.vercel.app
 
 ## Modes
 
