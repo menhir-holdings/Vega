@@ -45,6 +45,7 @@
 
   --font-display: var(--font-cormorant);
   --font-sans: var(--font-libre);
+  --font-huge: var(--font-syne);
 
   --spacing-vega-xs: var(--space-xs);
   --spacing-vega-sm: var(--space-sm);
@@ -96,6 +97,14 @@
     font-weight: 300;
     line-height: 1.1;
     letter-spacing: -0.015em;
+  }
+
+  .text-display-huge {
+    font-family: var(--font-syne), "Syne", system-ui, sans-serif;
+    font-size: clamp(4.5rem, 22vw, 18rem);
+    font-weight: 800;
+    line-height: 0.82;
+    letter-spacing: -0.055em;
   }
 
   .text-label {
