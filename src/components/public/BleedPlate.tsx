@@ -28,7 +28,7 @@ export function BleedPlate() {
           className="object-cover object-[center_22%]"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-[rgba(18,16,14,0.88)] via-[rgba(18,16,14,0.28)] to-transparent"
+          className="absolute inset-0 bg-gradient-to-t from-[rgba(18,16,14,0.94)] via-[rgba(18,16,14,0.45)] to-transparent"
           aria-hidden
         />
       </motion.div>
@@ -49,19 +49,19 @@ export function BleedPlate() {
           }}
         >
           <motion.p
-            className="mb-4 text-[0.75rem] tracking-[0.18em] uppercase text-[var(--vega-paper-elevated)]/70"
+            className="mb-4 text-[0.75rem] tracking-[0.18em] uppercase text-[#faf8f5]/85"
             variants={fadeUp}
           >
             {photographer.role} · {photographer.location}
           </motion.p>
           <motion.h1
-            className="font-[family-name:var(--font-display)] text-[clamp(3.25rem,8vw,7.5rem)] font-light leading-[0.92] tracking-[-0.03em] text-[var(--vega-paper-elevated)]"
+            className="font-[family-name:var(--font-display)] text-[clamp(3.25rem,8vw,7.5rem)] font-light leading-[0.92] tracking-[-0.03em] text-[#faf8f5] [text-shadow:0_2px_24px_rgba(18,16,14,0.55)]"
             variants={fadeUp}
           >
             {photographer.name}
           </motion.h1>
           <motion.p
-            className="mt-6 max-w-md text-lg leading-relaxed text-[var(--vega-paper-elevated)]/78 sm:text-xl"
+            className="mt-6 max-w-md text-lg leading-relaxed text-[#faf8f5]/90 sm:text-xl"
             variants={fadeInSlow}
           >
             {photographer.plateLine}
