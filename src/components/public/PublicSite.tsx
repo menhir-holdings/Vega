@@ -39,7 +39,7 @@ export function PublicSite() {
               sizes="(max-width: 640px) 92vw, 36rem"
             />
           </div>
-          <div className="mt-[-14%] ml-auto w-[min(24rem,64%)] sm:mt-[-18%] sm:mr-[4%]">
+          <div className="mt-12 ml-auto w-[min(24rem,72%)] lg:mt-[-18%] lg:mr-[4%]">
             <StillPlate
               still={lookout}
               sizes="(max-width: 640px) 64vw, 24rem"

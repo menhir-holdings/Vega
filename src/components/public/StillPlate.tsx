@@ -14,27 +14,31 @@ export function StillPlate({
 }) {
   return (
     <figure className="m-0">
-      <div
-        className={
-          bleed
-            ? "relative h-[92svh] w-full overflow-hidden bg-stone"
-            : "relative w-full overflow-hidden bg-stone"
-        }
-        style={
-          bleed
-            ? undefined
-            : { aspectRatio: `${still.width} / ${still.height}` }
-        }
-      >
-        <Image
-          src={still.src}
-          alt={still.alt}
-          fill
-          priority={priority}
-          sizes={sizes}
-          className="object-cover"
-        />
-      </div>
+      {bleed ? (
+        <div className="relative h-[92svh] w-full overflow-hidden bg-stone">
+          <Image
+            src={still.src}
+            alt={still.alt}
+            width={still.width}
+            height={still.height}
+            priority={priority}
+            sizes={sizes}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      ) : (
+        <div className="bg-stone">
+          <Image
+            src={still.src}
+            alt={still.alt}
+            width={still.width}
+            height={still.height}
+            priority={priority}
+            sizes={sizes}
+            className="h-auto w-full"
+          />
+        </div>
+      )}
       <figcaption
         className={`text-sheet mt-3 text-ink-muted ${
           bleed ? "px-[var(--space-sm)] sm:px-[var(--space-md)]" : ""
