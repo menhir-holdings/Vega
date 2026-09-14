@@ -1,27 +1,25 @@
 @import "tailwindcss";
 
-/* ─── Palette (quiet luxury, low contrast) ─── */
+/* Gallery plaster. Photographs carry the color — not a cream theme kit. */
 :root {
-  --vega-paper: #f4f1ec;
-  --vega-paper-elevated: #faf8f5;
-  --vega-stone: #e8e4dd;
-  --vega-ink: #4a4640;
-  --vega-ink-muted: #7a756c;
-  --vega-ink-faint: #a39e94;
-  --vega-overlay: rgba(36, 34, 31, 0.42);
-  --vega-line: rgba(74, 70, 64, 0.12);
+  --vega-paper: #f6f5f2;
+  --vega-paper-elevated: #fbfaf7;
+  --vega-stone: #e6e4de;
+  --vega-ink: #1c1b19;
+  --vega-ink-muted: #5c5a55;
+  --vega-ink-faint: #8a8780;
+  --vega-overlay: rgba(28, 27, 25, 0.4);
+  --vega-line: rgba(28, 27, 25, 0.12);
 
-  /* Apple editorial spacing rhythm + wedding softness */
   --space-2xs: 0.375rem;
   --space-xs: 0.75rem;
   --space-sm: 1.25rem;
-  --space-md: 2rem;
-  --space-lg: 3.5rem;
-  --space-xl: 5.5rem;
-  --space-2xl: 8.5rem;
+  --space-md: 2.25rem;
+  --space-lg: 4rem;
+  --space-xl: 6.5rem;
+  --space-2xl: 9rem;
   --space-3xl: 12rem;
 
-  /* Motion */
   --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-fade: cubic-bezier(0.25, 0.1, 0.25, 1);
   --duration-slow: 1.15s;
@@ -43,8 +41,12 @@
   --color-ink-faint: var(--vega-ink-faint);
   --color-line: var(--vega-line);
 
-  --font-display: var(--font-cormorant);
-  --font-sans: var(--font-libre);
+  --font-serif: var(--font-newsreader);
+  --font-display: var(--font-newsreader);
+  --font-sans: var(--font-newsreader);
+  --font-cormorant: var(--font-newsreader);
+  --font-libre: var(--font-newsreader);
+  --font-syne: var(--font-newsreader);
 
   --spacing-vega-xs: var(--space-xs);
   --spacing-vega-sm: var(--space-sm);
@@ -68,10 +70,10 @@
   body {
     background: var(--vega-paper);
     color: var(--vega-ink);
-    font-family: var(--font-libre), "Libre Franklin", system-ui, sans-serif;
-    font-size: 1.0625rem;
-    line-height: 1.65;
-    letter-spacing: 0.01em;
+    font-family: var(--font-newsreader), "Newsreader", Georgia, serif;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    letter-spacing: -0.012em;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -82,27 +84,19 @@
 }
 
 @layer utilities {
-  .text-display-xl {
-    font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-    font-size: clamp(2.75rem, 6vw + 1rem, 5.25rem);
-    font-weight: 300;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-  }
-
-  .text-display-lg {
-    font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-    font-size: clamp(2rem, 3.5vw + 0.75rem, 3.25rem);
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.015em;
+  .text-sheet {
+    font-family: var(--font-newsreader), "Newsreader", Georgia, serif;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
   }
 
   .text-label {
     font-size: 0.8125rem;
     font-weight: 400;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: var(--vega-ink-muted);
   }
 

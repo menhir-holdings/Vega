@@ -1,37 +1,30 @@
 # Vega
 
-Photo portfolio builder + client delivery for students and photographers.
+Professional photographer website, plus a quiet owner desk.
 
-**Live:** https://vega.menhir-holdings.com
+**Live (canonical):** https://vega-menhir-holdings.vercel.app
 
-## Modes
+The unpaid `.com` is not the bookmark.
 
-| Mode | URL | Device |
-|------|-----|--------|
-| Product home | `/` | Any |
-| Admin (upload, curate, publish) | `/admin` | Desktop |
-| Client delivery (pick → download) | `/deliver/{token}` | Mobile |
-| Demo published portfolio | `/demo` | Any |
+## Surfaces
 
-Portfolio builder is a **controller + previewer** — publish to `{slug}.vega.menhir-holdings.com` or custom domain. Delivery is a **facet** on the same album model (private albums, lifecycle states).
+| Surface | URL | Who |
+|---------|-----|-----|
+| Public site | `/` | Visitors |
+| Owner desk | `/desk` | Photographer / Vega |
+
+`/` is the photographer site (fictional talent, real-feeling stills). `/desk` shows what's live, a preview, and how to ask for a change.
+
+Leftover `/admin`, `/s/{slug}`, and `/deliver/{token}` routes are unwired from the public chrome.
 
 ## Docs
 
 - [Product definition](./docs/PRODUCT.md)
-- [DNS setup](./docs/DNS.md)
-- [BOB migration](./docs/BOB-MIGRATION.md)
-
-## Dev
-
-```bash
-npm install
-npm run dev
-```
+- [DNS](./docs/DNS.md)
 
 ## Repo
 
-https://github.com/ledoit/Vega
-
+https://github.com/menhir-holdings/Vega
 
 ## License
 
