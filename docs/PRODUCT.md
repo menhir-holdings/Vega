@@ -16,7 +16,7 @@ Non-tech clients want a sleek professional website, control over the first look 
 
 ## This pass (skeleton)
 
-1. **Public site (`/`)** — professional photographer site for fictional talent (Iris Calder). Full-bleed still, a named plate, selected work, inquire. Always on. No marketplace, explore, or follow.
+1. **Public site (`/`)** — professional photographer site for fictional talent (Iris Calder). Monograph of stills on paper, a sentence, inquire. Always on. No marketplace, explore, or follow.
 2. **Owner desk (`/desk`)** — one quiet screen: what's live, a live preview, how to ask for a change. No Clerk maze required for the skeleton.
 
 Leftover album/admin/delivery routes may still exist in the repo. They are not the default experience and are not linked from `/` or `/desk`.
@@ -29,7 +29,7 @@ Leftover album/admin/delivery routes may still exist in the repo. They are not t
 ┌─────────────────────────────────────────────────────────┐
 │  PUBLIC SITE  /                                          │
 │  Always-on photographer website                          │
-│  Plate · still + name · work · about · inquire           │
+│  Still · sentence · monograph · about · inquire          │
 └───────────────────────────┬─────────────────────────────┘
                             │ owner only
 ┌───────────────────────────▼─────────────────────────────┐

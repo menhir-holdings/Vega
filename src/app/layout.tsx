@@ -1,33 +1,21 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Libre_Franklin, Syne } from "next/font/google";
+import { Newsreader } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400"],
-  display: "swap",
-});
-
-const libreFranklin = Libre_Franklin({
-  variable: "--font-libre",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
   weight: ["300", "400", "500"],
-  display: "swap",
-});
-
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["700", "800"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Iris Calder — Photographer",
+  title: "Iris Calder",
   description:
-    "Portraits and stills. Photographs made slowly — for people who would rather be seen than staged.",
+    "Photographs made slowly — for people who would rather be seen than staged.",
   metadataBase: new URL("https://vega-menhir-holdings.vercel.app"),
+  applicationName: "Vega",
 };
 
 export default function RootLayout({
@@ -36,10 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${cormorant.variable} ${libreFranklin.variable} ${syne.variable} h-full`}
-    >
+    <html lang="en" className={`${newsreader.variable} h-full`}>
       <body className="min-h-full bg-paper text-ink antialiased">
         <a
           href="#main"
