@@ -6,9 +6,8 @@ export const photographer = {
   role: "Photographer",
   location: "Lisbon",
   email: "studio@iris-calder.com",
-  lede: "Photographs made slowly — for people who would rather be seen than staged.",
   about:
-    "Iris Calder works in natural light between Lisbon and the Atlantic. Portraits, stills, and the quiet space around a person. Vega keeps this site live; Iris asks when something should change.",
+    "Works in natural light between Lisbon and the Atlantic. Portraits, and the quiet around a person.",
 } as const;
 
 export const liveSite = {
@@ -39,13 +38,7 @@ export const openingStill: PublicStill = {
   caption: "Estoril",
 };
 
-export const monograph: readonly [
-  PublicStill,
-  PublicStill,
-  PublicStill,
-  PublicStill,
-  PublicStill,
-] = [
+export const monograph: readonly [PublicStill, PublicStill] = [
   {
     id: "sitter",
     src: "/stills/02-sitter.jpg",
@@ -55,35 +48,11 @@ export const monograph: readonly [
     caption: "Marta",
   },
   {
-    id: "oculus",
-    src: "/stills/03-oculus.jpg",
-    alt: "Someone sitting beneath a circular opening in a pale wall",
-    width: 1400,
-    height: 1750,
-    caption: "A wall in town",
-  },
-  {
-    id: "north",
-    src: "/stills/04-north.jpg",
-    alt: "A single road across moorland, cloud sitting on the ridge",
-    width: 2000,
-    height: 1192,
-    caption: "North",
-  },
-  {
     id: "lookout",
     src: "/stills/05-lookout.jpg",
     alt: "Portrait on a lookout, orange beanie, city below",
     width: 1400,
     height: 1923,
     caption: "Tomás",
-  },
-  {
-    id: "path",
-    src: "/stills/06-path.jpg",
-    alt: "A forest path after rain, trunks in filtered light",
-    width: 1800,
-    height: 1199,
-    caption: "After rain",
   },
 ];

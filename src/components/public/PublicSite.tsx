@@ -13,12 +13,7 @@ export function PublicSite() {
           id="plate"
           aria-label={`${photographer.name} — opening still`}
         >
-          <StillPlate
-            still={openingStill}
-            bleed
-            priority
-            sizes="100vw"
-          />
+          <StillPlate still={openingStill} bleed priority sizes="100vw" />
         </section>
 
         <section
@@ -28,7 +23,9 @@ export function PublicSite() {
           <h1 className="font-[family-name:var(--font-serif)] text-[clamp(2rem,4.5vw,3.25rem)] font-normal leading-[1.12] tracking-[-0.03em] text-ink">
             {photographer.name}
           </h1>
-          <p className="text-sheet mt-4 text-ink-muted">{photographer.location}</p>
+          <p className="text-sheet mt-4 text-ink-muted">
+            {photographer.location}
+          </p>
         </section>
 
         <section

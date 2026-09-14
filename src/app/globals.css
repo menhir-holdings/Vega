@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Gallery plaster — not cream wedding-theme paper */
+/* Gallery plaster. Photographs carry the color — not a cream theme kit. */
 :root {
   --vega-paper: #f6f5f2;
   --vega-paper-elevated: #fbfaf7;
@@ -47,10 +47,6 @@
   --font-cormorant: var(--font-newsreader);
   --font-libre: var(--font-newsreader);
   --font-syne: var(--font-newsreader);
-  --font-cormorant: var(--font-newsreader);
-  --font-libre: var(--font-newsreader);
-  --font-syne: var(--font-newsreader);
-  --font-huge: var(--font-newsreader);
 
   --spacing-vega-xs: var(--space-xs);
   --spacing-vega-sm: var(--space-sm);
@@ -76,8 +72,8 @@
     color: var(--vega-ink);
     font-family: var(--font-newsreader), "Newsreader", Georgia, serif;
     font-size: 1.125rem;
-    line-height: 1.6;
-    letter-spacing: -0.005em;
+    line-height: 1.55;
+    letter-spacing: -0.012em;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -88,20 +84,13 @@
 }
 
 @layer utilities {
-  .text-display-xl {
+  .text-sheet {
     font-family: var(--font-newsreader), "Newsreader", Georgia, serif;
-    font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+    font-size: 0.9375rem;
     font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-  }
-
-  .text-display-lg {
-    font-family: var(--font-newsreader), "Newsreader", Georgia, serif;
-    font-size: clamp(1.75rem, 2.8vw + 0.6rem, 2.75rem);
-    font-weight: 400;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
   }
 
   .text-label {

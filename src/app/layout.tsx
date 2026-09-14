@@ -5,15 +5,14 @@ import "./globals.css";
 const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Iris Calder",
-  description:
-    "Photographs made slowly — for people who would rather be seen than staged.",
+  description: "Iris Calder. Portraits and stills, Lisbon.",
   metadataBase: new URL("https://vega-menhir-holdings.vercel.app"),
   applicationName: "Vega",
 };
