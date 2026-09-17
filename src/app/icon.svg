@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Vega">
+  <rect width="32" height="32" fill="#191715"/>
+  <circle cx="18.5" cy="12.5" r="2.15" fill="#f5f4f0"/>
+  <circle cx="11.2" cy="20.8" r="0.85" fill="#f5f4f0" opacity="0.45"/>
+</svg>
