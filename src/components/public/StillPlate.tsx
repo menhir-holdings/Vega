@@ -15,7 +15,7 @@ export function StillPlate({
   return (
     <figure className="m-0">
       {bleed ? (
-        <div className="relative h-[92svh] w-full overflow-hidden bg-stone">
+        <div className="vega-hero-frame relative isolate h-[92svh] w-full overflow-hidden bg-stone">
           <Image
             src={still.src}
             alt={still.alt}
@@ -23,7 +23,7 @@ export function StillPlate({
             height={still.height}
             priority={priority}
             sizes={sizes}
-            className="h-full w-full object-cover"
+            className="vega-hero-still h-full w-full object-cover"
           />
         </div>
       ) : (

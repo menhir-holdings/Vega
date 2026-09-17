@@ -104,3 +104,38 @@
     transition-timing-function: var(--ease-cinematic);
   }
 }
+
+/* Opening still: slow Ken Burns (not scroll parallax). Grain lives on the frame. */
+@keyframes vega-ken-burns {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.06) translate3d(-0.35%, 0.55%, 0);
+  }
+}
+
+.vega-hero-still {
+  transform-origin: 48% 62%;
+  animation: vega-ken-burns 18s var(--ease-fade) forwards;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.vega-hero-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vega-hero-still {
+    animation: none;
+    will-change: auto;
+  }
+}
