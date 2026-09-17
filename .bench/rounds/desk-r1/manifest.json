@@ -1,0 +1,30 @@
+{
+  "id": "desk-r1",
+  "brief": "Owner desk chrome — four graphite prototypes. Function is inferred from labels.",
+  "axes": "where the live site sits relative to status, marks, stills, and a single Send",
+  "subject": "owner-desk",
+  "frameRoute": "/desk",
+  "columns": 2,
+  "takes": [
+    {
+      "letter": "A",
+      "name": "Graphite split",
+      "thesis": "Current: production status and compose on the left, live site iframe on the right."
+    },
+    {
+      "letter": "B",
+      "name": "Preview-first",
+      "thesis": "The live site is the desk. Visit and Send sit as chips on a thin rail."
+    },
+    {
+      "letter": "C",
+      "name": "Proofing",
+      "thesis": "Annotation marks sit on the live preview. One Send ships the note."
+    },
+    {
+      "letter": "D",
+      "name": "Film-room",
+      "thesis": "A contact strip of stills, the live iframe, and one compose."
+    }
+  ]
+}

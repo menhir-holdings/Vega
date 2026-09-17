@@ -1,43 +1,28 @@
-# DNS — vega.menhir-holdings.com
+# DNS — Vega
 
-Wire **Vega** through Cloudflare to Vercel. Same rules as SyncStation — do not touch Zoho mail records.
+**Canonical bookmark:** [https://vega-menhir-holdings.vercel.app](https://vega-menhir-holdings.vercel.app)
 
-## Cloudflare record
-
-| Name | Type | Target | Proxy |
-|------|------|--------|-------|
-| `vega` | CNAME | `cname.vercel-dns.com` | **DNS only** (grey cloud) first |
-
-After Vercel verifies the domain and SSL is green, you may enable orange-cloud with SSL **Full (strict)**.
+Do not treat an unpaid `vega.menhir-holdings.com` (or photographer `{slug}.vega.menhir-holdings.com` bounce) as the live product. Preview and production for this pass are the Vercel `vercel.app` host.
 
 ## Vercel
 
-Project: **vega** (`menhir-tech` team), GitHub: `ledoit/Vega`.
+Project: **vega** (`menhir-holdings` team), GitHub: `menhir-holdings/Vega`.
 
 ```bash
-cd "Menhir Holdings/Website/vega"
-npx vercel@54 link --scope menhir-tech --yes
-npx vercel@54 domains add vega.menhir-holdings.com --scope menhir-tech
-npx vercel@54 --prod --scope menhir-tech
+cd "Menhir Holdings/Visual/vega"
+npx vercel@54 link --scope menhir-holdings --yes
+npx vercel@54 deploy --yes --scope menhir-holdings
 ```
 
-In the Vercel dashboard → **vega** → Settings → Domains, confirm `vega.menhir-holdings.com` is assigned to **Production**.
+## Future custom domain
 
-### Future: photographer subdomains
+If a paid `vega.menhir-holdings.com` is wired later, CNAME `vega` → `cname.vercel-dns.com` (DNS only until SSL is green). Until then, the vercel.app bookmark is canonical.
 
-For `{slug}.vega.menhir-holdings.com` published portfolios:
-
-| Name | Type | Target |
-|------|------|--------|
-| `*.vega` | CNAME | `cname.vercel-dns.com` |
-
-Or use Vercel wildcard domain on the project when portfolio publish ships.
+Do **not** add `{slug}.vega.menhir-holdings.com` wildcards that bounce unpaid `.com` hosts.
 
 ## URLs
 
 | Role | URL |
 |------|-----|
-| Product home | https://vega.menhir-holdings.com |
-| Admin | https://vega.menhir-holdings.com/admin |
-| Client delivery | https://vega.menhir-holdings.com/deliver/{token} |
-| Demo portfolio | https://vega.menhir-holdings.com/demo |
+| Public site | https://vega-menhir-holdings.vercel.app |
+| Owner desk | https://vega-menhir-holdings.vercel.app/desk |

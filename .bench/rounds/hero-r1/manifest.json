@@ -1,0 +1,40 @@
+{
+  "id": "hero-r1",
+  "brief": "Opening bleed still — motion in the window of the plate, not through the page.",
+  "axes": "motion-in-window of the photographic plate",
+  "subject": "opening-bleed",
+  "frameRoute": "/",
+  "columns": 3,
+  "takes": [
+    {
+      "letter": "A",
+      "name": "Current Ken Burns",
+      "thesis": "The plate eases 1.0→1.06 over ~18s on .vega-hero-still; grain sits on the frame; reduced-motion holds the still."
+    },
+    {
+      "letter": "D",
+      "name": "Hold-on-breath",
+      "thesis": "The photograph is frozen. Only grain, caption, and type are allowed to live."
+    },
+    {
+      "letter": "E",
+      "name": "Boxed Ken Burns",
+      "thesis": "The same slow push, but it happens inside an inset plate — not the full bleed."
+    },
+    {
+      "letter": "F",
+      "name": "Two-still crossfade",
+      "thesis": "Estoril and the lookout trade on a ~20s timer. No scroll, no Ken Burns."
+    },
+    {
+      "letter": "G",
+      "name": "Crop-as-composition",
+      "thesis": "The frame stays put. object-position cuts to a new crop on a stepped cycle — not mouse, not parallax."
+    },
+    {
+      "letter": "H",
+      "name": "Letterbox",
+      "thesis": "A still photograph in a cinematic matte. No push, no fade, no crop walk."
+    }
+  ]
+}

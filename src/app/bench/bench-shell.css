@@ -1,0 +1,16 @@
+.bench-shell {
+  --bench-ground: #101012;
+  --bench-chrome: #161618;
+  --bench-line: rgba(244, 244, 245, 0.12);
+  --bench-ink: #f4f4f5;
+  --bench-muted: #c4c4c8;
+  --bench-faint: #9a9aa0;
+  min-height: 100svh;
+  background: var(--bench-ground);
+  color: var(--bench-ink);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+}
+
+.bench-shell a {
+  color: inherit;
+}
