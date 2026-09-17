@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      { source: "/__bench/:round", destination: "/bench/:round" },
+    ];
+  },
 };
 
 export default nextConfig;

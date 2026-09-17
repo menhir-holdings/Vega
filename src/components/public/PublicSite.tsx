@@ -1,10 +1,18 @@
+import { HERO_TAKES } from "@/bench/hero-takes";
+import { BenchSubject } from "@/components/bench/BenchSubject";
 import { PublicHeader } from "@/components/public/PublicHeader";
 import { StillPlate } from "@/components/public/StillPlate";
 import { monograph, openingStill, photographer } from "@/lib/public-site";
 
 const [sitter, lookout] = monograph;
 
-export function PublicSite() {
+export function PublicSite({
+  benchRound,
+  benchTake,
+}: {
+  benchRound?: string;
+  benchTake?: string;
+} = {}) {
   return (
     <>
       <PublicHeader />
@@ -13,7 +21,20 @@ export function PublicSite() {
           id="plate"
           aria-label={`${photographer.name} — opening still`}
         >
-          <StillPlate still={openingStill} bleed priority sizes="100vw" />
+          <BenchSubject
+            subject="opening-bleed"
+            round={benchRound}
+            take={benchTake}
+            takes={HERO_TAKES}
+            slotProps={{
+              still: openingStill,
+              priority: true,
+              sizes: "100vw",
+              bleed: true,
+            }}
+          >
+            <StillPlate still={openingStill} bleed priority sizes="100vw" />
+          </BenchSubject>
         </section>
 
         <section
