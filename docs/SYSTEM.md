@@ -1,6 +1,6 @@
 # Vega — system design
 
-**Vega is a photographer website plus a quiet desk.** Canonical host: `vega-menhir-holdings.vercel.app`. Album/admin machinery may still exist in-tree; it is not the default `/`.
+**Vega is a photographer website plus an operator desk.** Canonical host: `vega-menhir-holdings.vercel.app`. Album/admin machinery may still exist in-tree; it is not the default `/`.
 
 ---
 
@@ -10,7 +10,7 @@
 flowchart TB
   subgraph live [Always on]
     Public["/ photographer site"]
-    Desk["/desk what's live · preview · ask"]
+    Desk["/desk production · preview · ask"]
   end
 
   subgraph leftover [Unwired leftover]

@@ -1,6 +1,6 @@
 # Vega
 
-Professional photographer website, plus a quiet owner desk.
+Professional photographer website, plus an operator desk.
 
 **Live (canonical):** https://vega-menhir-holdings.vercel.app
 
@@ -13,7 +13,7 @@ The unpaid `.com` is not the bookmark.
 | Public site | `/` | Visitors |
 | Owner desk | `/desk` | Photographer / Vega |
 
-`/` is the photographer site (fictional talent, real-feeling stills). `/desk` shows what's live, a preview, and how to ask for a change.
+`/` is the photographer site (fictional talent, real-feeling stills). `/desk` is a split operator: production status, a live iframe of `/`, and a change request.
 
 Leftover `/admin`, `/s/{slug}`, and `/deliver/{token}` routes are unwired from the public chrome.
 

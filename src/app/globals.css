@@ -83,6 +83,30 @@
   }
 }
 
+.desk-root {
+  --desk-ground: #101012;
+  --desk-chrome: #161618;
+  --desk-panel: #131316;
+  --desk-paper: #f6f5f2;
+  --desk-line: rgba(244, 244, 245, 0.12);
+  --desk-ink: #f4f4f5;
+  --desk-muted: #c4c4c8;
+  --desk-faint: #9a9aa0;
+  --desk-ready: #3dcc7a;
+  background: var(--desk-ground);
+  color: var(--desk-ink);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.desk-root ::selection {
+  background: #3a3a40;
+  color: var(--desk-ink);
+}
+
 @layer utilities {
   .text-sheet {
     font-family: var(--font-newsreader), "Newsreader", Georgia, serif;
