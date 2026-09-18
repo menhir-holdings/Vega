@@ -82,7 +82,7 @@ export function OwnerDesk() {
       </header>
 
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
-        <aside className="flex w-full shrink-0 flex-col gap-10 border-b border-[var(--desk-line)] bg-[var(--desk-panel)] px-4 py-6 sm:px-5 lg:w-[22.5rem] lg:overflow-y-auto lg:border-r lg:border-b-0 xl:w-[24rem]">
+        <aside className="flex w-full shrink-0 flex-col border-b border-[var(--desk-line)] bg-[var(--desk-panel)] px-4 py-6 sm:px-5 lg:w-[22.5rem] lg:overflow-y-auto lg:border-r lg:border-b-0 xl:w-[24rem]">
           <section aria-labelledby="desk-live-heading">
             <h2
               id="desk-live-heading"
@@ -138,53 +138,6 @@ export function OwnerDesk() {
               </div>
             </dl>
           </section>
-
-          <section aria-labelledby="desk-ask-heading" className="mt-auto">
-            <h2
-              id="desk-ask-heading"
-              className="text-[0.75rem] font-medium text-[var(--desk-faint)]"
-            >
-              Change request
-            </h2>
-            {sent ? (
-              <div className="mt-4 space-y-3">
-                <p className="text-[0.875rem] text-[var(--desk-ink)]">
-                  Mail client opened.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setNote("");
-                    setSent(false);
-                  }}
-                  className="text-[0.8125rem] text-[var(--desk-muted)] underline-offset-4 hover:text-[var(--desk-ink)] hover:underline"
-                >
-                  Write another
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleAsk} className="mt-4 space-y-3">
-                <label htmlFor={fieldId} className="sr-only">
-                  Change request
-                </label>
-                <textarea
-                  id={fieldId}
-                  value={note}
-                  onChange={(event) => setNote(event.target.value)}
-                  rows={7}
-                  required
-                  placeholder="Swap the hero still. Softer type on About."
-                  className="w-full resize-y border border-[var(--desk-line)] bg-[var(--desk-ground)] px-3 py-3 text-[0.875rem] leading-relaxed text-[var(--desk-ink)] outline-none placeholder:text-[var(--desk-faint)] focus:border-[var(--desk-ink)]"
-                />
-                <button
-                  type="submit"
-                  className="inline-flex h-9 items-center bg-[var(--desk-ink)] px-4 text-[0.75rem] font-medium text-[var(--desk-ground)] transition-opacity hover:opacity-90"
-                >
-                  Send
-                </button>
-              </form>
-            )}
-          </section>
         </aside>
 
         <section
@@ -208,6 +161,48 @@ export function OwnerDesk() {
           </div>
         </section>
       </div>
+
+      {sent ? (
+        <div className="flex shrink-0 items-center gap-3 border-t border-[var(--desk-line)] bg-[var(--desk-chrome)] px-3 py-2.5 sm:px-4">
+          <p className="text-[0.875rem] text-[var(--desk-ink)]">
+            Mail client opened.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setNote("");
+              setSent(false);
+            }}
+            className="text-[0.8125rem] text-[var(--desk-muted)] underline-offset-4 hover:text-[var(--desk-ink)] hover:underline"
+          >
+            Write another
+          </button>
+        </div>
+      ) : (
+        <form
+          onSubmit={handleAsk}
+          className="flex shrink-0 items-end gap-2 border-t border-[var(--desk-line)] bg-[var(--desk-chrome)] px-3 py-2.5 sm:px-4"
+        >
+          <label htmlFor={fieldId} className="sr-only">
+            Change request
+          </label>
+          <textarea
+            id={fieldId}
+            value={note}
+            onChange={(event) => setNote(event.target.value)}
+            rows={2}
+            required
+            placeholder="Swap the hero still. Softer type on About."
+            className="min-h-[2.5rem] min-w-0 flex-1 resize-none border border-[var(--desk-line)] bg-[var(--desk-ground)] px-3 py-2 text-[0.8125rem] text-[var(--desk-ink)] outline-none placeholder:text-[var(--desk-faint)]"
+          />
+          <button
+            type="submit"
+            className="inline-flex h-9 shrink-0 items-center bg-[var(--desk-ink)] px-4 text-[0.75rem] font-medium text-[var(--desk-ground)]"
+          >
+            Send
+          </button>
+        </form>
+      )}
     </div>
   );
 }
