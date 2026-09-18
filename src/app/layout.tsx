@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Newsreader } from "next/font/google";
+import { Geist, Newsreader } from "next/font/google";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -7,6 +7,12 @@ const newsreader = Newsreader({
   subsets: ["latin"],
   weight: ["400", "500"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -23,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${newsreader.variable} h-full`}>
+    <html lang="en" className={`${newsreader.variable} ${geist.variable} h-full`}>
       <body className="min-h-full bg-paper text-ink antialiased">
         <a
           href="#main"

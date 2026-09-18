@@ -11,7 +11,12 @@ export const photographer = {
 } as const;
 
 export const liveSite = {
-  status: "Live",
+  status: "Ready",
+  productionUrl: "https://vega-menhir-holdings.vercel.app",
+  productionHost: "vega-menhir-holdings.vercel.app",
+  publishedAt: "2026-07-22T09:15:22.119Z",
+  sourceRef: "main",
+  sourceSha: "7966689",
   pages: [
     { id: "home", label: "Home", href: "/#plate" },
     { id: "work", label: "Work", href: "/#work" },

@@ -1,6 +1,6 @@
 # Vega — UX specification
 
-Vega is a **photographer website** with a quiet owner desk. Visitors never see a product. The owner never learns a CMS.
+Vega is a **photographer website** with an operator desk. Visitors never see a product. The owner never learns a CMS.
 
 ---
 
@@ -32,15 +32,24 @@ Patterns stolen (not cloned) — photographer/editorial homes, not SaaS editors:
 
 Opening still on plaster → a sentence → asymmetric monograph → about as running type → email. No overlay hero, no masonry "Work" grid, no tracked section kickers. No explore, follow, or community.
 
-### B. Owner desk (`/desk`) — one quiet screen
+### B. Owner desk (`/desk`) — split operator
 
 **Question:** "What's live, and how do I change it?"
 
-- What's live (status + pages)
-- Preview of `/` in a desk frame
-- Ask for a change (write it; Vega takes it from there)
+Archetype: **split operator** — controls left, live preview always visible on the right (stacked below on mobile). Not a cream marketing page wearing a sidebar.
 
-No site-builder chrome, no album pipeline, no Clerk wall for this skeleton.
+Patterns stolen (not cloned):
+
+- [Vercel Overview — production status, domain, Ready, Visit](https://mobbin.com/screens/d8e63884-5d43-4337-bf31-5667bc4ba5db)
+- [Stripe invoice editor — form left, preview pane always on](https://mobbin.com/screens/3999077e-87cc-480e-b561-e713408d76d4)
+
+Jobs only:
+
+1. **Trust** — production URL, Ready status, last publish, source in hard chrome (not editorial type)
+2. **See the site** — iframe of public `/` filling the right pane
+3. **Ask for a change** — one compose field + Send (mailto in v1)
+
+Graphite operator surface, Geist. No matching public cream/serif, no WP-dashboard cards, no site-builder, no Clerk wall for this skeleton.
 
 ---
 
@@ -55,6 +64,8 @@ No site-builder chrome, no album pipeline, no Clerk wall for this skeleton.
 | Explore / follow / appreciate | Unwired; not linked |
 | `{slug}.vega…` bounce to unpaid `.com` | Canonical `vega-menhir-holdings.vercel.app` |
 | CMS as the home screen | Desk: live + preview + ask |
+| Desk matching public cream/serif | Graphite operator chrome |
+| WP-dashboard preview cards | Full-height iframe of `/` |
 
 ---
 

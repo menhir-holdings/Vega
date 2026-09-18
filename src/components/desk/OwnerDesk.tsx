@@ -1,8 +1,20 @@
 "use client";
 
-import Link from "next/link";
 import { useId, useState, type FormEvent } from "react";
 import { liveSite, photographer } from "@/lib/public-site";
+
+function formatPublished(iso: string) {
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+    timeZone: "UTC",
+    timeZoneName: "short",
+  }).format(new Date(iso));
+}
 
 export function OwnerDesk() {
   const fieldId = useId();
@@ -20,112 +32,177 @@ export function OwnerDesk() {
   }
 
   return (
-    <div id="main" className="min-h-[100svh] bg-[#eceae6] text-ink">
-      <header className="flex items-center justify-between gap-4 border-b border-line bg-paper/90 px-[var(--space-sm)] py-4 sm:px-[var(--space-md)]">
-        <div className="flex items-center gap-4">
-          <p className="text-[0.75rem] tracking-[0.16em] uppercase text-ink-muted">
-            Desk
-          </p>
-          <span className="hidden h-3 w-px bg-line sm:block" aria-hidden />
-          <p className="font-[family-name:var(--font-display)] text-lg font-light">
-            {photographer.name}
-          </p>
-          <span className="rounded-full border border-line px-2.5 py-0.5 text-[0.6875rem] tracking-[0.12em] uppercase text-ink-muted">
-            {liveSite.status}
+    <div
+      id="main"
+      className="desk-root flex min-h-[100svh] flex-col lg:h-[100svh] lg:overflow-hidden"
+    >
+      <header className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 border-b border-[var(--desk-line)] bg-[var(--desk-chrome)] px-4 py-3 sm:px-5">
+        <p className="text-[0.8125rem] font-medium tracking-[-0.02em] text-[var(--desk-ink)]">
+          Vega
+          <span className="mx-2 text-[var(--desk-faint)]" aria-hidden>
+            /
           </span>
+          Desk
+        </p>
+        <span
+          className="hidden h-4 w-px bg-[var(--desk-line)] sm:block"
+          aria-hidden
+        />
+        <p className="text-[0.8125rem] text-[var(--desk-muted)]">
+          {photographer.name}
+        </p>
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-1 sm:justify-end">
+          <p className="flex items-center gap-2 text-[0.8125rem] text-[var(--desk-ink)]">
+            <span
+              className="inline-block size-1.5 shrink-0 rounded-full bg-[var(--desk-ready)]"
+              aria-hidden
+            />
+            <span className="font-medium">{liveSite.status}</span>
+          </p>
+          <a
+            href={liveSite.productionUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="truncate font-mono text-[0.75rem] text-[var(--desk-muted)] transition-colors hover:text-[var(--desk-ink)]"
+          >
+            {liveSite.productionHost}
+          </a>
+          <p className="text-[0.75rem] text-[var(--desk-faint)]">
+            Published {formatPublished(liveSite.publishedAt)}
+          </p>
+          <a
+            href={liveSite.productionUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-8 items-center bg-[var(--desk-ink)] px-3 text-[0.75rem] font-medium text-[var(--desk-ground)] transition-opacity hover:opacity-90"
+          >
+            Visit
+          </a>
         </div>
-        <Link
-          href="/"
-          target="_blank"
-          rel="noreferrer"
-          className="text-[0.8125rem] tracking-[0.12em] text-ink-muted transition-colors hover:text-ink"
-        >
-          Open live site
-        </Link>
       </header>
 
-      <div className="mx-auto grid max-w-[1600px] gap-8 px-[var(--space-sm)] py-8 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)] lg:items-start lg:gap-10 lg:px-[var(--space-md)] lg:py-10">
-        <aside className="space-y-10">
-          <section>
-            <p className="text-label mb-3">What&apos;s live</p>
-            <p className="font-[family-name:var(--font-display)] text-2xl font-light leading-snug">
-              The public site is on.
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-              Visitors land on the photographer site. There is no marketplace,
-              follow graph, or community layer.
-            </p>
-            <p className="mt-4 text-xs tracking-[0.04em] text-ink-faint">
-              {liveSite.bookmark}
-            </p>
-            <ul className="mt-6 space-y-2">
-              {liveSite.pages.map((page) => (
-                <li key={page.id}>
-                  <Link
-                    href={page.href}
-                    className="text-sm text-ink-muted transition-colors hover:text-ink"
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+        <aside className="flex w-full shrink-0 flex-col border-b border-[var(--desk-line)] bg-[var(--desk-panel)] px-4 py-6 sm:px-5 lg:w-[22.5rem] lg:overflow-y-auto lg:border-r lg:border-b-0 xl:w-[24rem]">
+          <section aria-labelledby="desk-live-heading">
+            <h2
+              id="desk-live-heading"
+              className="text-[0.75rem] font-medium text-[var(--desk-faint)]"
+            >
+              Production
+            </h2>
+            <dl className="mt-4 space-y-3">
+              <div className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-baseline gap-3">
+                <dt className="text-[0.75rem] text-[var(--desk-faint)]">
+                  Domain
+                </dt>
+                <dd className="min-w-0">
+                  <a
+                    href={liveSite.productionUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="break-all font-mono text-[0.8125rem] text-[var(--desk-ink)] transition-colors hover:text-white"
                   >
-                    {page.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <p className="text-label mb-3">Ask for a change</p>
-            <p className="mb-4 text-sm leading-relaxed text-ink-muted">
-              Write what should move. Vega takes it from there — no editor to
-              learn.
-            </p>
-            {sent ? (
-              <p className="text-sm text-ink">Noted. We&apos;ll take it from here.</p>
-            ) : (
-              <form onSubmit={handleAsk} className="space-y-3">
-                <label htmlFor={fieldId} className="sr-only">
-                  Change request
-                </label>
-                <textarea
-                  id={fieldId}
-                  value={note}
-                  onChange={(event) => setNote(event.target.value)}
-                  rows={5}
-                  required
-                  placeholder="Swap the hero still. Softer type on About."
-                  className="w-full resize-y border border-line bg-paper px-3 py-3 text-sm leading-relaxed text-ink outline-none placeholder:text-ink-faint focus:border-ink"
-                />
-                <button
-                  type="submit"
-                  className="border border-ink bg-ink px-4 py-2 text-[0.75rem] tracking-[0.14em] uppercase text-paper transition-opacity hover:opacity-90"
-                >
-                  Send
-                </button>
-              </form>
-            )}
+                    {liveSite.productionHost}
+                  </a>
+                </dd>
+              </div>
+              <div className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-baseline gap-3">
+                <dt className="text-[0.75rem] text-[var(--desk-faint)]">
+                  Status
+                </dt>
+                <dd className="flex items-center gap-2 text-[0.8125rem] text-[var(--desk-ink)]">
+                  <span
+                    className="inline-block size-1.5 rounded-full bg-[var(--desk-ready)]"
+                    aria-hidden
+                  />
+                  {liveSite.status}
+                </dd>
+              </div>
+              <div className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-baseline gap-3">
+                <dt className="text-[0.75rem] text-[var(--desk-faint)]">
+                  Published
+                </dt>
+                <dd className="text-[0.8125rem] text-[var(--desk-ink)]">
+                  {formatPublished(liveSite.publishedAt)}
+                </dd>
+              </div>
+              <div className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-baseline gap-3">
+                <dt className="text-[0.75rem] text-[var(--desk-faint)]">
+                  Source
+                </dt>
+                <dd className="font-mono text-[0.8125rem] text-[var(--desk-ink)]">
+                  {liveSite.sourceRef}
+                  <span className="text-[var(--desk-faint)]"> · </span>
+                  {liveSite.sourceSha}
+                </dd>
+              </div>
+            </dl>
           </section>
         </aside>
 
-        <section aria-label="Live preview">
-          <p className="text-label mb-3 hidden lg:block">Preview</p>
-          <div className="overflow-hidden border border-line bg-paper shadow-[0_24px_80px_rgba(36,34,31,0.12)]">
-            <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
-              <p className="text-[0.6875rem] tracking-[0.08em] text-ink-faint">
-                {photographer.name} · live
-              </p>
-              <span className="text-[0.6875rem] tracking-[0.12em] uppercase text-ink-muted">
-                Published
-              </span>
-            </div>
-            <div className="relative aspect-[4/3] overflow-hidden bg-[#d8d4cc]">
-              <iframe
-                title={`${photographer.name} live site`}
-                src="/"
-                className="pointer-events-none absolute left-0 top-0 h-[200%] w-[200%] origin-top-left scale-50 border-0 bg-paper"
-              />
-            </div>
+        <section
+          aria-label="Live preview"
+          className="flex h-[70svh] min-h-[70svh] min-w-0 flex-1 flex-col bg-[var(--desk-ground)] lg:h-auto lg:min-h-0"
+        >
+          <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--desk-line)] px-4 py-2.5">
+            <p className="text-[0.8125rem] font-medium text-[var(--desk-ink)]">
+              Preview
+            </p>
+            <p className="truncate font-mono text-[0.75rem] text-[var(--desk-faint)]">
+              Public /
+            </p>
+          </div>
+          <div className="relative min-h-0 flex-1 bg-[var(--desk-paper)]">
+            <iframe
+              title={`${photographer.name} public site`}
+              src="/"
+              className="absolute inset-0 h-full w-full border-0 bg-[var(--desk-paper)]"
+            />
           </div>
         </section>
       </div>
+
+      {sent ? (
+        <div className="flex shrink-0 items-center gap-3 border-t border-[var(--desk-line)] bg-[var(--desk-chrome)] px-3 py-2.5 sm:px-4">
+          <p className="text-[0.875rem] text-[var(--desk-ink)]">
+            Mail client opened.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setNote("");
+              setSent(false);
+            }}
+            className="text-[0.8125rem] text-[var(--desk-muted)] underline-offset-4 hover:text-[var(--desk-ink)] hover:underline"
+          >
+            Write another
+          </button>
+        </div>
+      ) : (
+        <form
+          onSubmit={handleAsk}
+          className="flex shrink-0 items-end gap-2 border-t border-[var(--desk-line)] bg-[var(--desk-chrome)] px-3 py-2.5 sm:px-4"
+        >
+          <label htmlFor={fieldId} className="sr-only">
+            Change request
+          </label>
+          <textarea
+            id={fieldId}
+            value={note}
+            onChange={(event) => setNote(event.target.value)}
+            rows={2}
+            required
+            placeholder="Swap the hero still. Softer type on About."
+            className="min-h-[2.5rem] min-w-0 flex-1 resize-none border border-[var(--desk-line)] bg-[var(--desk-ground)] px-3 py-2 text-[0.8125rem] text-[var(--desk-ink)] outline-none placeholder:text-[var(--desk-faint)]"
+          />
+          <button
+            type="submit"
+            className="inline-flex h-9 shrink-0 items-center bg-[var(--desk-ink)] px-4 text-[0.75rem] font-medium text-[var(--desk-ground)]"
+          >
+            Send
+          </button>
+        </form>
+      )}
     </div>
   );
 }
